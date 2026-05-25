@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WINGSTONE | Dibuat untuk Kepercayaan Modern</title>
+    <meta name="description" content="Merek streetwear modern premium yang dirancang untuk kepercayaan diri dan estetika minimalis mewah.">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts (Montserrat & Satoshi-like replacement) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        /* Custom Hide Scrollbar for Lookbook Masonry/Horizontal on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-neutral-900 dark:bg-[#0d0d0d] dark:text-stone-100 transition-colors duration-500 overflow-x-hidden">
+
+    <!-- LOADING ANIMATION -->
+    <div x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 1500)" x-show="loading" 
+         x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0d0d0d]">
+        <h1 class="text-3xl md:text-5xl font-light tracking-[0.3em] text-white animate-pulse">WINGSTONE</h1>
+        <div class="w-16 h-[1px] bg-stone-500 mt-4 animate-scale"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav x-data="{ isTop: true, mobileMenu: false }" 
+         @scroll.window="isTop = (window.pageYOffset > 50) ? false : true"
+         :class="isTop ? 'bg-transparent border-transparent' : 'bg-stone-50/80 dark:bg-[#0d0d0d]/80 backdrop-blur-md border-b border-stone-200/20 shadow-sm'"
+         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4 md:px-12 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <a href="#" class="text-xl md:text-2xl font-bold tracking-[0.25em] text-neutral-900 dark:text-white">
+            WINGSTONE
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8 text-xs font-medium tracking-widest uppercase">
+            <a href="#" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Beranda</a>
+            <a href="#collection" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Koleksi</a>
+            <a href="#about" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Tentang</a>
+            <a href="#lookbook" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Lookbook</a>
+            <a href="#reviews" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Ulasan</a>
+            <a href="#contact" class="hover:text-stone-500 dark:hover:text-stone-400 transition-colors">Kontak</a>
+        </div>
+
+        <!-- Utility Icons (Dark Mode & Mobile Toggle) -->
+        <div class="flex items-center space-x-4">
+            <!-- Toggle Dark Mode -->
+            <button @click="darkMode = !darkMode" class="text-sm p-2 text-neutral-700 dark:text-stone-300 focus:outline-none" aria-label="Toggle Dark Mode">
+                <i class="fa-solid" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button @click="mobileMenu = !mobileMenu" class="md:hidden text-lg text-neutral-900 dark:text-white focus:outline-none">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div x-show="mobileMenu" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+             class="fixed inset-y-0 right-0 w-64 bg-stone-100 dark:bg-[#121212] z-50 p-6 flex flex-col justify-between shadow-2xl md:hidden">
+            <div>
+                <div class="flex justify-end mb-8">
+                    <button @click="mobileMenu = false" class="text-xl"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="flex flex-col space-y-6 text-sm font-medium tracking-widest uppercase">
+                    <a @click="mobileMenu = false" href="#" class="py-2 border-b border-stone-200 dark:border-stone-800">Beranda</a>
+                    <a @click="mobileMenu = false" href="#collection" class="py-2 border-b border-stone-200 dark:border-stone-800">Koleksi</a>
+                    <a @click="mobileMenu = false" href="#about" class="py-2 border-b border-stone-200 dark:border-stone-800">Tentang</a>
+                    <a @click="mobileMenu = false" href="#lookbook" class="py-2 border-b border-stone-200 dark:border-stone-800">Lookbook</a>
+                    <a @click="mobileMenu = false" href="#reviews" class="py-2 border-b border-stone-200 dark:border-stone-800">Ulasan</a>
+                    <a @click="mobileMenu = false" href="#contact" class="py-2 border-b border-stone-200 dark:border-stone-800">Kontak</a>
+                </div>
+            </div>
+            <div class="text-[10px] tracking-widest text-stone-400 uppercase">
+                © 2026 WINGSTONE.
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <!-- Cinematic Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center filter brightness-[0.45] dark:brightness-[0.35] scale-105 transition-transform duration-[10000ms] hover:scale-100" 
+             style="background-image: url('photo_2026-05-25_09-50-37.jpg');">
+        </div>
+
+        <!-- Glassmorphism Overlay (Subtle) -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-stone-50 dark:to-[#0d0d0d] opacity-90"></div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-4xl animate-[fadeIn_1.5s_ease-out]">
+            <h1 class="text-5xl md:text-8xl font-extralight tracking-[0.35em] text-white mb-4 uppercase">
+                WINGSTONE
+            </h1>
+            <p class="text-xs md:text-sm font-light tracking-[0.5em] text-stone-300 uppercase mb-12">
+                Dibuat untuk Kemewahan Tanpa Batas
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-semibold tracking-widest uppercase">
+                <a href="#collection" class="w-48 py-4 bg-white text-black border border-white hover:bg-transparent hover:text-white transition-all duration-300 rounded-none shadow-lg">
+                    Belanja Sekarang
+                </a>
+                <a href="#lookbook" class="w-48 py-4 bg-transparent text-white border border-white/40 hover:border-white transition-all duration-300 backdrop-blur-sm">
+                    Jelajahi Koleksi
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center opacity-60 animate-bounce">
+            <span class="text-[9px] uppercase tracking-[0.3em] text-white mb-2">Gulir</span>
+            <div class="w-[1px] h-8 bg-white/60"></div>
+        </div>
+    </header>
+
+    <!-- FEATURED COLLECTION -->
+    <section id="collection" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase">Produk Unggulan</h2>
+            <div class="w-12 h-[1px] bg-neutral-900 dark:bg-white mx-auto mt-4"></div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Product Card 1 -->
+            <div class="group relative flex flex-col">
+                <div class="relative overflow-hidden aspect-[3/4] bg-stone-200 dark:bg-stone-900">
+                    <img src="photo_2026-05-11_18-33-39 (7).jpg" alt="Product 1" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                        <button class="px-6 py-3 bg-white text-black text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-neutral-900 hover:text-white transition-all duration-300 w-11/12 mx-auto">Lihat Produk</button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-start text-sm">
+                    <div>
+                        <h3 class="font-medium tracking-wide text-neutral-800 dark:text-stone-200">Premium Zipper</h3>
+                        <p class="text-xs text-stone-400 mt-1">Polo Mewah</p>
+                    </div>
+                    <span class="font-light tracking-wider text-stone-600 dark:text-stone-300">Rp. 129.999</span>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="group relative flex flex-col">
+                <div class="relative overflow-hidden aspect-[3/4] bg-stone-200 dark:bg-stone-900">
+                    <img src="photo_2026-05-11_18-33-39 (8).jpg" alt="Product 2" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                        <button class="px-6 py-3 bg-white text-black text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-neutral-900 hover:text-white transition-all duration-300 w-11/12 mx-auto">Lihat Produk</button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-start text-sm">
+                    <div>
+                        <h3 class="font-medium tracking-wide text-neutral-800 dark:text-stone-200">Menggunakan Sablon Bordir</h3>
+                        <p class="text-xs text-stone-400 mt-1">Polo Mewah</p>
+                    </div>
+                    <span class="font-light tracking-wider text-stone-600 dark:text-stone-300">Rp. 129.999</span>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="group relative flex flex-col">
+                <div class="relative overflow-hidden aspect-[3/4] bg-stone-200 dark:bg-stone-900">
+                    <img src="photo_2026-05-16_10-18-42 (3).jpg" alt="Product 3" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                        <button class="px-6 py-3 bg-white text-black text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-neutral-900 hover:text-white transition-all duration-300 w-11/12 mx-auto">Lihat Produk</button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-start text-sm">
+                    <div>
+                        <h3 class="font-medium tracking-wide text-neutral-800 dark:text-stone-200">Size Chart</h3>
+                        <p class="text-xs text-stone-400 mt-1"></p>
+                    </div>
+                    <span class="font-light tracking-wider text-stone-600 dark:text-stone-300"></span>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="group relative flex flex-col">
+                <div class="relative overflow-hidden aspect-[3/4] bg-stone-200 dark:bg-stone-900">
+                    <img src="photo_2026-05-25_00-13-32.jpg" alt="Product 4" class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                        <button class="px-6 py-3 bg-white text-black text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-neutral-900 hover:text-white transition-all duration-300 w-11/12 mx-auto">Lihat Produk</button>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-start text-sm">
+                    <div>
+                        <h3 class="font-medium tracking-wide text-neutral-800 dark:text-stone-200">Kancing Mewah Klasik</h3>
+                        <p class="text-xs text-stone-400 mt-1">Polo Mewah</p>
+                    </div>
+                    <span class="font-light tracking-wider text-stone-600 dark:text-stone-300">Rp. 129.999</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT BRAND SECTION (Split Layout) -->
+    <section id="about" class="py-20 bg-stone-100 dark:bg-[#121212] transition-colors duration-500">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-6 md:px-12">
+            <!-- Left: Text Content -->
+            <div class="space-y-6 max-w-xl">
+                <span class="text-xs tracking-[0.4em] uppercase text-stone-400 block">WINGSTONE</span>
+                <h2 class="text-3xl md:text-4xl font-extralight tracking-widest uppercase text-neutral-900 dark:text-white">
+                    Kualitas Tanpa Kompromi, <br>Selalu Modern.
+                </h2>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed font-light">
+                    WINGSTONE lahir dari perpaduan estetika *minimalisme mewah* dan ketegasan *streetwear kontemporer*. Kami percaya bahwa pakaian bukan sekadar penutup tubuh, melainkan sebuah manifestasi dari rasa percaya diri yang modern (*kepercayaan modern*).
+                </p>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed font-light">
+                    Setiap potongan siluet dirancang dengan detail presisi tinggi, menggunakan material premium pilihan bersertifikasi internasional untuk memastikan kenyamanan mutlak tanpa mengorbankan eksklusivitas penampilan Anda.
+                </p>
+                <div class="pt-4">
+                    <a href="#lookbook" class="inline-block text-xs font-bold uppercase tracking-widest border-b border-neutral-900 dark:border-white pb-1 hover:text-stone-400 hover:border-stone-400 transition-all">
+                        Collection
+                    </a>
+                </div>
+            </div>
+            <!-- Right: Video Grid Effect (uses local video file `video_hero.mp4`) -->
+            <div class="relative overflow-hidden aspect-video lg:aspect-square bg-stone-300 dark:bg-stone-800">
+                <video src="video_2026-05-25_10-46-55.mp4" poster="photo_2026-05-25_09-50-37.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline controls>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOOKBOOK SECTION (Editorial Grid/Masonry Layout) -->
+    <section id="lookbook" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs tracking-[0.4em] uppercase text-stone-400 block mb-2">Editorial</span>
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase">Volume 01 / Lookbook</h2>
+            <div class="w-12 h-[1px] bg-neutral-900 dark:bg-white mx-auto mt-4"></div>
+        </div>
+
+        <!-- Masonry-like Layout Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[250px] md:auto-rows-[350px]">
+            <div class="md:col-span-4 md:row-span-2 overflow-hidden bg-stone-800 relative group">
+                <img src="photo_2026-05-25_10-36-13.jpg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Lookbook 1">
+            </div>
+            <div class="md:col-span-8 md:row-span-1 overflow-hidden bg-stone-800 relative group">
+                <img src="photo_2026-05-25_10-36-14%20(2).jpg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Lookbook 2">
+            </div>
+            <div class="md:col-span-4 md:row-span-1 overflow-hidden bg-stone-800 relative group">
+                <img src="photo_2026-05-25_10-36-14.jpg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Lookbook 3">
+            </div>
+            <div class="md:col-span-4 md:row-span-1 overflow-hidden bg-stone-800 relative group">
+                <img src="photo_2026-05-25_11-01-05.jpg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Lookbook 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="py-20 bg-stone-100 dark:bg-[#121212] transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+            <div class="flex flex-col items-center p-4">
+                <div class="text-xl md:text-2xl mb-4 text-stone-500 dark:text-stone-400"><i class="fa-solid fa-gem"></i></div>
+                <h3 class="text-xs uppercase tracking-widest font-semibold mb-2">Material Premium</h3>
+                <p class="text-[11px] text-stone-400 font-light max-w-xs">Pique Hexagon 24s.</p>
+            </div>
+            <div class="flex flex-col items-center p-4">
+                <div class="text-xl md:text-2xl mb-4 text-stone-500 dark:text-stone-400"><i class="fa-solid fa-compass-drafting"></i></div>
+                <h3 class="text-xs uppercase tracking-widest font-semibold mb-2">Desain Modern</h3>
+                <p class="text-[11px] text-stone-400 font-light max-w-xs">Detail presisi dan material pilihan untuk penampilan yang tak lekang waktu.</p>
+            </div>
+            <div class="flex flex-col items-center p-4">
+                <div class="text-xl md:text-2xl mb-4 text-stone-500 dark:text-stone-400"><i class="fa-solid fa-cloud"></i></div>
+                <h3 class="text-xs uppercase tracking-widest font-semibold mb-2">Kenyamanan Maksimal</h3>
+                <p class="text-[11px] text-stone-400 font-light max-w-xs">Dimensi yang selaras secara ergonomis untuk kenyamanan sepanjang hari.</p>
+            </div>
+            <div class="flex flex-col items-center p-4">
+                <div class="text-xl md:text-2xl mb-4 text-stone-500 dark:text-stone-400"><i class="fa-solid fa-certificate"></i></div>
+                <h3 class="text-xs uppercase tracking-widest font-semibold mb-2">Edisi Terbatas</h3>
+                <p class="text-[11px] text-stone-400 font-light max-w-xs">Rilis bernomor eksklusif untuk menjaga keaslian.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIAL SECTION -->
+    <section id="reviews" class="py-24 px-6 md:px-12 max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs tracking-[0.4em] uppercase text-stone-400 block mb-2">Ulasan Terverifikasi</span>
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase">Suara Kolektif</h2>
+            <div class="w-12 h-[1px] bg-neutral-900 dark:bg-white mx-auto mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Review 1 -->
+            <div class="p-8 border border-stone-200 dark:border-stone-800 bg-white/50 dark:bg-[#141414]/50 backdrop-blur-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex text-amber-500 text-[10px] mb-4 gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs leading-relaxed font-light text-stone-600 dark:text-stone-300 italic">"Kualitas bahan di luar ekspektasi saya. Sangat tebal namun tetap dingin digunakan seharian. Potongan oversized-nya benar-benar sempurna layaknya brand kelas dunia."</p>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider">Adrian K.</h4>
+                    <span class="text-[10px] text-stone-400">Jakarta, ID</span>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="p-8 border border-stone-200 dark:border-stone-800 bg-white/50 dark:bg-[#141414]/50 backdrop-blur-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex text-amber-500 text-[10px] mb-4 gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs leading-relaxed font-light text-stone-600 dark:text-stone-300 italic">"Desain minimalis yang sangat berkelas. WINGSTONE berhasil membuktikan bahwa esensi kemewahan sejati terletak pada detail kecil dan material kain yang kokoh."</p>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider">Marcus V.</h4>
+                    <span class="text-[10px] text-stone-400">Singapore</span>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="p-8 border border-stone-200 dark:border-stone-800 bg-white/50 dark:bg-[#141414]/50 backdrop-blur-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex text-amber-500 text-[10px] mb-4 gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs leading-relaxed font-light text-stone-600 dark:text-stone-300 italic">"Pengiriman cepat, kemasan silinder box sangat premium dan wangi. Pengalaman unboxing paling memuaskan untuk brand lokal berskala internasional."</p>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider">Sarah T.</h4>
+                    <span class="text-[10px] text-stone-400">Bandung, ID</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section id="contact" class="relative py-32 bg-[#090909] text-white text-center overflow-hidden">
+        <!-- Subtle noise background element or vector -->
+        <div class="absolute inset-0 bg-cover bg-center filter opacity-20 brightness-50" 
+             style="background-image: url('https://images.unsplash.com/photo-1540221652346-e5dd6b50f3e7?auto=format&fit=crop&w=1200&q=80');">
+        </div>
+        <div class="relative z-10 max-w-2xl mx-auto px-6 space-y-6">
+            <h2 class="text-3xl md:text-5xl font-extralight tracking-[0.25em] uppercase">Kenakan Kepercayaan dengan Wingstone</h2>
+            <p class="text-xs font-light tracking-widest text-stone-400 max-w-md mx-auto leading-relaxed">
+                Bergabunglah dengan jajaran eksklusif kurator gaya modern kami sekarang juga.
+            </p>
+            <div class="pt-4">
+                <a href="#collection" class="inline-block px-12 py-4 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-stone-200 transition-colors">
+                    Mulai Belanja
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-stone-100 dark:bg-[#080808] text-neutral-800 dark:text-stone-300 border-t border-stone-200 dark:border-stone-900 pt-16 pb-8 px-6 md:px-12 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <!-- Col 1: Brand Info -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold tracking-[0.25em] text-neutral-900 dark:text-white">WINGSTONE</h3>
+                <p class="text-xs text-stone-400 font-light leading-relaxed">Mendefinisikan puncak streetwear kontemporer premium dengan estetika kemewahan yang mutlak.</p>
+            </div>
+            <!-- Col 2: Navigation Links -->
+            <div class="space-y-3">
+                <h4 class="text-xs uppercase tracking-widest font-semibold text-neutral-900 dark:text-white">Informasi</h4>
+                <div class="flex flex-col space-y-2 text-xs font-light">
+                    <a href="#collection" class="hover:text-stone-500">Koleksi</a>
+                    <a href="#lookbook" class="hover:text-stone-500">Lookbook Vol. 01</a>
+                    <a href="#about" class="hover:text-stone-500">Manifesto Kami</a>
+                    <a href="#" class="hover:text-stone-500">Panduan Ukuran</a>
+                </div>
+            </div>
+            <!-- Col 3: Social Medias -->
+            <div class="space-y-3">
+                <h4 class="text-xs uppercase tracking-widest font-semibold text-neutral-900 dark:text-white">Terhubung</h4>
+                <div class="flex flex-col space-y-2 text-xs font-light">
+                    <a href="https://instagram.com" target="_blank" class="hover:text-stone-400 flex items-center gap-2"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                    <a href="https://tiktok.com" target="_blank" class="hover:text-stone-400 flex items-center gap-2"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+                    <a href="https://wa.me/#" target="_blank" class="hover:text-stone-400 flex items-center gap-2"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <!-- Col 4: Newsletter -->
+            <div class="space-y-3">
+                <h4 class="text-xs uppercase tracking-widest font-semibold text-neutral-900 dark:text-white">Buletin</h4>
+                <p class="text-[11px] text-stone-400 font-light">Berlangganan untuk mendapatkan notifikasi rilis awal dan pre-order eksklusif.</p>
+                <form class="flex border-b border-stone-300 dark:border-stone-700 pb-1 pt-2">
+                    <input type="email" placeholder="MASUKKAN EMAIL ANDA" class="bg-transparent text-xs w-full focus:outline-none tracking-wider uppercase font-light text-stone-400" required>
+                    <button type="submit" class="text-xs font-medium text-neutral-900 dark:text-white tracking-widest ml-2 hover:text-stone-400"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Copyright & Technical Standards -->
+        <div class="max-w-7xl mx-auto pt-8 border-t border-stone-200 dark:border-stone-900 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-[10px] tracking-widest text-stone-400 uppercase">© 2026 WINGSTONE. Seluruh hak cipta dilindungi.</p>
+            <div class="flex gap-6 text-[10px] tracking-widest text-stone-400 uppercase">
+                <a href="#" class="hover:text-stone-200">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-stone-200">Ketentuan Layanan</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
